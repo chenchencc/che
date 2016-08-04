@@ -10,18 +10,14 @@
  *******************************************************************************/
 package org.eclipse.che.ide.editor.orion.client;
 
-import com.google.inject.assistedinject.Assisted;
-import com.google.inject.assistedinject.AssistedInject;
+import com.google.inject.Inject;
 import com.google.web.bindery.event.shared.EventBus;
 
 import org.eclipse.che.ide.api.app.AppContext;
-import org.eclipse.che.ide.api.editor.EditorLocalizationConstants;
-import org.eclipse.che.ide.api.notification.NotificationManager;
-import org.eclipse.che.ide.api.parts.WorkspaceAgent;
 import org.eclipse.che.ide.api.debug.BreakpointManager;
-import org.eclipse.che.ide.editor.orion.client.jso.OrionLinkedModelDataOverlay;
-import org.eclipse.che.ide.editor.orion.client.jso.OrionLinkedModelGroupOverlay;
-import org.eclipse.che.ide.editor.orion.client.jso.OrionLinkedModelOverlay;
+import org.eclipse.che.ide.api.debug.BreakpointRendererFactory;
+import org.eclipse.che.ide.api.dialogs.DialogFactory;
+import org.eclipse.che.ide.api.editor.EditorLocalizationConstants;
 import org.eclipse.che.ide.api.editor.annotation.AnnotationModel;
 import org.eclipse.che.ide.api.editor.annotation.AnnotationModelEvent;
 import org.eclipse.che.ide.api.editor.annotation.AnnotationModelHandler;
@@ -30,7 +26,6 @@ import org.eclipse.che.ide.api.editor.annotation.ClearAnnotationModelHandler;
 import org.eclipse.che.ide.api.editor.annotation.HasAnnotationRendering;
 import org.eclipse.che.ide.api.editor.codeassist.CodeAssistantFactory;
 import org.eclipse.che.ide.api.editor.codeassist.HasCompletionInformation;
-import org.eclipse.che.ide.api.debug.BreakpointRendererFactory;
 import org.eclipse.che.ide.api.editor.document.DocumentHandle;
 import org.eclipse.che.ide.api.editor.document.DocumentStorage;
 import org.eclipse.che.ide.api.editor.filetype.FileTypeIdentifier;
@@ -42,12 +37,15 @@ import org.eclipse.che.ide.api.editor.link.LinkedModel;
 import org.eclipse.che.ide.api.editor.link.LinkedModelData;
 import org.eclipse.che.ide.api.editor.link.LinkedModelGroup;
 import org.eclipse.che.ide.api.editor.quickfix.QuickAssistantFactory;
-import org.eclipse.che.ide.api.editor.texteditor.EditorModule;
 import org.eclipse.che.ide.api.editor.texteditor.EditorWidget;
 import org.eclipse.che.ide.api.editor.texteditor.EditorWidgetFactory;
 import org.eclipse.che.ide.api.editor.texteditor.TextEditorPartView;
 import org.eclipse.che.ide.api.editor.texteditor.TextEditorPresenter;
-import org.eclipse.che.ide.api.dialogs.DialogFactory;
+import org.eclipse.che.ide.api.notification.NotificationManager;
+import org.eclipse.che.ide.api.parts.WorkspaceAgent;
+import org.eclipse.che.ide.editor.orion.client.jso.OrionLinkedModelDataOverlay;
+import org.eclipse.che.ide.editor.orion.client.jso.OrionLinkedModelGroupOverlay;
+import org.eclipse.che.ide.editor.orion.client.jso.OrionLinkedModelOverlay;
 
 /**
  * {@link TextEditorPresenter} using orion.
@@ -60,15 +58,15 @@ public class OrionEditorPresenter extends TextEditorPresenter<OrionEditorWidget>
 
     private final AnnotationRendering rendering = new AnnotationRendering();
 
-    @AssistedInject
+    @Inject
     public OrionEditorPresenter(final CodeAssistantFactory codeAssistantFactory,
                                 final BreakpointManager breakpointManager,
                                 final BreakpointRendererFactory breakpointRendererFactory,
                                 final DialogFactory dialogFactory,
                                 final DocumentStorage documentStorage,
                                 final EditorLocalizationConstants constant,
-                                @Assisted final EditorWidgetFactory<OrionEditorWidget> editorWigetFactory,
-                                final EditorModule<OrionEditorWidget> editorModule,
+                                final EditorWidgetFactory<OrionEditorWidget> editorWigetFactory,
+                                final AbstractEditorModule editorModule,
                                 final TextEditorPartView editorView,
                                 final EventBus eventBus,
                                 final FileTypeIdentifier fileTypeIdentifier,

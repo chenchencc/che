@@ -10,7 +10,10 @@
  *******************************************************************************/
 package org.eclipse.che.ide.editor.orion.client;
 
-import static com.google.common.collect.Lists.newArrayList;
+import com.google.gwt.core.client.JavaScriptObject;
+import com.google.gwt.core.client.JsArrayString;
+import com.google.inject.Inject;
+import com.google.inject.Provider;
 
 import org.eclipse.che.ide.api.editor.filetype.MultipleMethodFileIdentifier;
 import org.eclipse.che.ide.api.editor.texteditor.EditorModule.EditorModuleReadyCallback;
@@ -19,10 +22,7 @@ import org.eclipse.che.ide.editor.orion.client.jso.OrionContentTypeOverlay;
 import org.eclipse.che.ide.editor.orion.client.jso.OrionHighlightingConfigurationOverlay;
 import org.eclipse.che.ide.editor.orion.client.jso.OrionServiceRegistryOverlay;
 
-import com.google.gwt.core.client.JavaScriptObject;
-import com.google.gwt.core.client.JsArrayString;
-import com.google.inject.Inject;
-import com.google.inject.Provider;
+import static com.google.common.collect.Lists.newArrayList;
 
 /**
  * Component to register new content types and corresponding highlighting configuration.
@@ -31,15 +31,15 @@ import com.google.inject.Provider;
  */
 public class OrionContentTypeRegistrant {
 
-    final MultipleMethodFileIdentifier fileTypeIdentifier;
+    final MultipleMethodFileIdentifier         fileTypeIdentifier;
     final Provider<OrionCodeEditWidgetOverlay> codeEditWidgetProvider;
-    final OrionEditorModule editorModule;
+    final AbstractEditorModule                 editorModule;
     
     @Inject
     public OrionContentTypeRegistrant(
             final MultipleMethodFileIdentifier fileTypeIdentifier,
             final Provider<OrionCodeEditWidgetOverlay> codeEditWidgetProvider,
-            final OrionEditorModule editorModule) {
+            final AbstractEditorModule editorModule) {
         this.fileTypeIdentifier = fileTypeIdentifier;
         this.codeEditWidgetProvider = codeEditWidgetProvider;
         this.editorModule = editorModule;

@@ -127,7 +127,7 @@ public class TextEditorPresenter<T extends EditorWidget> extends AbstractEditorP
     private final DocumentStorage             documentStorage;
     private final EditorLocalizationConstants constant;
     private final EditorWidgetFactory<T>      editorWidgetFactory;
-    private final EditorModule<T>             editorModule;
+    private final EditorModule             editorModule;
     private final TextEditorPartView          editorView;
     private final EventBus                    generalEventBus;
     private final FileTypeIdentifier          fileTypeIdentifier;
@@ -155,6 +155,7 @@ public class TextEditorPresenter<T extends EditorWidget> extends AbstractEditorP
     private List<String>             fileTypes;
     private TextPosition             cursorPosition;
     private HandlerRegistration      resourceChangeHandler;
+    private TextEditorInit<T> editorInit;
 
     @AssistedInject
     public TextEditorPresenter(final CodeAssistantFactory codeAssistantFactory,
@@ -164,7 +165,7 @@ public class TextEditorPresenter<T extends EditorWidget> extends AbstractEditorP
                                final DocumentStorage documentStorage,
                                final EditorLocalizationConstants constant,
                                @Assisted final EditorWidgetFactory<T> editorWidgetFactory,
-                               final EditorModule<T> editorModule,
+                               final EditorModule editorModule,
                                final TextEditorPartView editorView,
                                final EventBus eventBus,
                                final FileTypeIdentifier fileTypeIdentifier,
@@ -204,11 +205,13 @@ public class TextEditorPresenter<T extends EditorWidget> extends AbstractEditorP
             quickAssistant = quickAssistantFactory.createQuickAssistant(this);
             quickAssistant.setQuickAssistProcessor(processor);
         }
-        new TextEditorInit<T>(configuration,
-                              generalEventBus,
-                              this.codeAssistantFactory,
-                              this.quickAssistant,
-                              this).init();
+
+        editorInit = new TextEditorInit<>(configuration,
+                                          generalEventBus,
+                                          this.codeAssistantFactory,
+                                          this.quickAssistant,
+                                          this);
+        editorInit.init();
 
         if (editorModule.isError()) {
             displayErrorPanel(constant.editorInitErrorMessage());
@@ -436,11 +439,7 @@ public class TextEditorPresenter<T extends EditorWidget> extends AbstractEditorP
     @Override
     public void close(final boolean save) {
         this.documentStorage.documentClosed(this.document);
-        final Reconciler reconciler = configuration.getReconciler();
-        if (reconciler != null) {
-            reconciler.uninstall();
-        }
-
+        editorInit.uninstall();
         workspaceAgent.removePart(this);
     }
 

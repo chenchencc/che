@@ -8,20 +8,21 @@
  * Contributors:
  *   Codenvy, S.A. - initial API and implementation
  *******************************************************************************/
-package org.eclipse.che.ide.api.editor.texteditor;
+package org.eclipse.che.ide.editor.orion.client;
+
+import com.google.inject.Singleton;
+
+import org.eclipse.che.ide.api.editor.texteditor.EditorModule;
+import org.eclipse.che.ide.util.loging.Log;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import org.eclipse.che.ide.api.editor.texteditor.EditorModule;
-import org.eclipse.che.ide.api.editor.texteditor.EditorWidget;
-import org.eclipse.che.ide.util.loging.Log;
-
 /**
  * Abstract implementation of {@link EditorModule}.
- * @param <T> the type of the editor
  */
-public abstract class AbstractEditorModule<T extends EditorWidget> implements EditorModule<T> {
+@Singleton
+public class AbstractEditorModule implements EditorModule {
 
     private boolean ready = false;
     private boolean error = false;

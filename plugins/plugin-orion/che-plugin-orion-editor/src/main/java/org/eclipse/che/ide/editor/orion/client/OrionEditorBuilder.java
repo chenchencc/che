@@ -11,6 +11,7 @@
 package org.eclipse.che.ide.editor.orion.client;
 
 import com.google.inject.Inject;
+import com.google.inject.Provider;
 
 import org.eclipse.che.ide.api.editor.defaulteditor.EditorBuilder;
 import org.eclipse.che.ide.api.editor.editorconfig.AutoSaveTextEditorConfiguration;
@@ -24,16 +25,17 @@ import org.eclipse.che.ide.api.editor.texteditor.TextEditorPresenter;
  */
 public class OrionEditorBuilder implements EditorBuilder {
 
-    private final OrionTextEditorFactory orionTextEditorFactory;
+
+    private final Provider<OrionEditorPresenter> orionTextEditorProvider;
 
     @Inject
-    public OrionEditorBuilder(OrionTextEditorFactory orionTextEditorFactory) {
-        this.orionTextEditorFactory = orionTextEditorFactory;
+    public OrionEditorBuilder(Provider<OrionEditorPresenter> orionTextEditorProvider) {
+        this.orionTextEditorProvider = orionTextEditorProvider;
     }
 
     @Override
     public TextEditor buildEditor() {
-        final TextEditorPresenter<OrionEditorWidget> editor = orionTextEditorFactory.createTextEditor();
+        final TextEditorPresenter<OrionEditorWidget> editor = orionTextEditorProvider.get();
         editor.initialize(new AutoSaveTextEditorConfiguration());
         return editor;
     }

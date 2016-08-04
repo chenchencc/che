@@ -20,8 +20,8 @@ import com.google.gwt.dom.client.Document;
 import com.google.gwt.dom.client.LinkElement;
 import com.google.inject.Singleton;
 
-import org.eclipse.che.ide.api.editor.texteditor.AbstractEditorModule.EditorInitializer;
-import org.eclipse.che.ide.api.editor.texteditor.AbstractEditorModule.InitializerCallback;
+import org.eclipse.che.ide.editor.orion.client.AbstractEditorModule.EditorInitializer;
+import org.eclipse.che.ide.editor.orion.client.AbstractEditorModule.InitializerCallback;
 import org.eclipse.che.ide.api.extension.Extension;
 import org.eclipse.che.ide.api.notification.NotificationManager;
 import org.eclipse.che.ide.api.notification.StatusNotification;
@@ -52,7 +52,7 @@ public class OrionEditorExtension {
     @Inject
     public OrionEditorExtension(final NotificationManager notificationManager,
                                 final RequireJsLoader requireJsLoader,
-                                final OrionEditorModule editorModule,
+                                final AbstractEditorModule editorModule,
                                 final OrionResource orionResource) {
         this.notificationManager = notificationManager;
         this.requireJsLoader = requireJsLoader;

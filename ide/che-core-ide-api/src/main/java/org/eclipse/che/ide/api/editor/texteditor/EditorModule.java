@@ -12,9 +12,8 @@ package org.eclipse.che.ide.api.editor.texteditor;
 
 /**
  * Front for an editor module, that allows to be warned when it's initialized.
- * @param <T> the type of the editor widget.
  */
-public interface EditorModule<T extends EditorWidget> {
+public interface EditorModule {
 
     /**
      * Tells if the editor module is initialized.
