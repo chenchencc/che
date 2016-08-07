@@ -15,6 +15,7 @@ import com.google.gwt.core.client.GWT;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.FlowPanel;
+import com.google.gwt.user.client.ui.TextArea;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
@@ -49,7 +50,7 @@ public class DevelopmentViewImpl implements DevelopmentView {
     TextBox sourceType;
 
     @UiField
-    TextBox sourceUrl;
+    TextArea source;
 
 
     @Inject
@@ -57,7 +58,7 @@ public class DevelopmentViewImpl implements DevelopmentView {
         this.rootElement = UI_BINDER.createAndBindUi(this);
         this.rootElement.setVisible(true);
 
-        buttonBuilder.withResourceWidget(sourceUrl).build();
+        buttonBuilder.withResourceWidget(source).build();
     }
 
 
@@ -87,13 +88,13 @@ public class DevelopmentViewImpl implements DevelopmentView {
     }
 
     @Override
-    public void setSourceType(String sourceType){
+    public void setSourceType(String sourceType) {
         this.sourceType.setValue(sourceType);
     }
 
     @Override
-    public void setSourceUrl(String sourceUrl) {
-        this.sourceUrl.setValue(sourceUrl);
+    public void setSourceContent(String sourceContent) {
+        this.source.setValue(sourceContent);
     }
 
     public void updateTargetFields(DevelopmentMachineTarget target) {
@@ -101,7 +102,7 @@ public class DevelopmentViewImpl implements DevelopmentView {
         this.setOwner(target.getOwner());
         this.setType(target.getType());
         this.setSourceType(target.getSourceType());
-        this.setSourceUrl(target.getSourceUrl());
+        this.setSourceContent(target.getSourceContent());
     }
 
     @Override
