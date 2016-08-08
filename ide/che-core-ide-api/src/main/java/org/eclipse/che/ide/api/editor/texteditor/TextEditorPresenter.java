@@ -11,6 +11,7 @@
 package org.eclipse.che.ide.api.editor.texteditor;
 
 import com.google.common.base.Optional;
+import com.google.gwt.core.client.Callback;
 import com.google.gwt.core.client.Scheduler;
 import com.google.gwt.event.dom.client.ChangeEvent;
 import com.google.gwt.event.dom.client.ChangeHandler;
@@ -27,6 +28,8 @@ import com.google.web.bindery.event.shared.HandlerRegistration;
 
 import org.eclipse.che.api.promises.client.Operation;
 import org.eclipse.che.api.promises.client.OperationException;
+import org.eclipse.che.api.promises.client.Promise;
+import org.eclipse.che.api.promises.client.callback.CallbackPromiseHelper;
 import org.eclipse.che.ide.api.app.AppContext;
 import org.eclipse.che.ide.api.debug.BreakpointManager;
 import org.eclipse.che.ide.api.debug.BreakpointRenderer;
@@ -104,7 +107,10 @@ import static org.eclipse.che.ide.api.resources.ResourceDelta.UPDATED;
 
 /**
  * Presenter part for the editor implementations.
+ *
+ * @deprecated use {@link TextEditor} instead
  */
+@Deprecated
 public class TextEditorPresenter<T extends EditorWidget> extends AbstractEditorPresenter implements TextEditor,
                                                                                                     FileEventHandler,
                                                                                                     UndoableEditor,
@@ -206,6 +212,13 @@ public class TextEditorPresenter<T extends EditorWidget> extends AbstractEditorP
             quickAssistant.setQuickAssistProcessor(processor);
         }
 
+
+        Promise<Document> documentPromice = CallbackPromiseHelper.createFromCallback(new CallbackPromiseHelper.Call<Document, Throwable>() {
+            @Override
+            public void makeCall(Callback<Document, Throwable> callback) {
+
+            }
+        });
         editorInit = new TextEditorInit<>(configuration,
                                           generalEventBus,
                                           this.codeAssistantFactory,
@@ -843,7 +856,8 @@ public class TextEditorPresenter<T extends EditorWidget> extends AbstractEditorP
         this.editorWidget.setReadOnly(readOnly);
     }
 
-    protected EditorWidget getEditorWidget() {
+    @Override
+    public EditorWidget getEditorWidget() {
         return this.editorWidget;
     }
 

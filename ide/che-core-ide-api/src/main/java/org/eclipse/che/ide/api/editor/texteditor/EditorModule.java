@@ -13,6 +13,7 @@ package org.eclipse.che.ide.api.editor.texteditor;
 /**
  * Front for an editor module, that allows to be warned when it's initialized.
  */
+@Deprecated
 public interface EditorModule {
 
     /**
@@ -34,6 +35,7 @@ public interface EditorModule {
     void waitReady(EditorModuleReadyCallback callback);
 
     /** Callback to call when the module is ready of failed. */
+    @Deprecated
     interface EditorModuleReadyCallback {
         /** Used when the initialization is done. */
         void onEditorModuleReady();

@@ -22,7 +22,6 @@ import org.eclipse.che.ide.api.editor.OpenEditorCallbackImpl;
 import org.eclipse.che.ide.api.editor.editorconfig.DefaultTextEditorConfiguration;
 import org.eclipse.che.ide.api.editor.texteditor.HandlesUndoRedo;
 import org.eclipse.che.ide.api.editor.texteditor.TextEditor;
-import org.eclipse.che.ide.api.editor.texteditor.TextEditorPresenter;
 import org.eclipse.che.ide.api.editor.texteditor.UndoableEditor;
 import org.eclipse.che.ide.api.filetypes.FileType;
 import org.eclipse.che.ide.api.filetypes.FileTypeRegistry;
@@ -30,7 +29,6 @@ import org.eclipse.che.ide.api.parts.PartPresenter;
 import org.eclipse.che.ide.api.parts.PropertyListener;
 import org.eclipse.che.ide.api.resources.VirtualFile;
 import org.eclipse.che.ide.editor.orion.client.OrionEditorPresenter;
-import org.eclipse.che.ide.editor.orion.client.OrionEditorWidget;
 import org.eclipse.che.ide.extension.machine.client.perspective.widgets.tab.content.TabPresenter;
 
 import javax.validation.constraints.NotNull;
@@ -167,7 +165,7 @@ public class RecipeEditorPanel implements TabPresenter, RecipeEditorView.ActionD
     }
 
     private TextEditor getEditor() {
-        TextEditorPresenter<OrionEditorWidget> editor = orionTextEditorFactory.get();
+        OrionEditorPresenter editor = orionTextEditorFactory.get();
         editor.initialize(new DefaultTextEditorConfiguration());
 
         return editor;
