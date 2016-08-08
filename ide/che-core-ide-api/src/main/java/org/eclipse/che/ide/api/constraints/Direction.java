@@ -8,22 +8,24 @@
  * Contributors:
  *   Codenvy, S.A. - initial API and implementation
  *******************************************************************************/
-package org.eclipse.che.ide.part.editor;
-
-import org.eclipse.che.ide.api.parts.EditorTab;
+package org.eclipse.che.ide.api.constraints;
 
 /**
- * Editor tab context menu factory.
+ * Defines possible directions of an item relative to another item.
  *
- * @author Vlad Zhukovskiy
+ * @author Roman Nikitenko
  */
-public interface EditorTabContextMenuFactory {
+public enum Direction {
+
     /**
-     * Creates new context menu for editor tab.
-     *
-     * @param editorTab
-     *         editor tab item
-     * @return new context menu
+     * Direction type that specifies the item to be the horizontally at the
+     * moment of addition.
      */
-    EditorTabContextMenu newContextMenu(EditorTab editorTab);
+    HORIZONTALLY,
+
+    /**
+     * Direction type that specifies the item to be the vertically at the
+     * moment of addition.
+     */
+    VERTICALLY
 }

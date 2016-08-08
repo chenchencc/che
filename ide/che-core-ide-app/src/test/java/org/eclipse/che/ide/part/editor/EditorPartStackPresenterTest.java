@@ -26,7 +26,7 @@ import org.eclipse.che.ide.api.resources.VirtualFile;
 import org.eclipse.che.ide.part.widgets.TabItemFactory;
 import org.eclipse.che.ide.part.PartStackPresenter.PartStackEventHandler;
 import org.eclipse.che.ide.part.PartsComparator;
-import org.eclipse.che.ide.part.widgets.editortab.EditorTab;
+import org.eclipse.che.ide.api.parts.EditorTab;
 import org.eclipse.che.ide.part.widgets.listtab.ListButton;
 import org.eclipse.che.ide.part.widgets.listtab.ListItem;
 import org.junit.Before;
@@ -121,8 +121,8 @@ public class EditorPartStackPresenterTest {
         when(partPresenter2.getEditorInput()).thenReturn(editorInput2);
         when(editorInput2.getFile()).thenReturn(file2);
 
-        when(tabItemFactory.createEditorPartButton(file1, resource1, SOME_TEXT)).thenReturn(editorTab1);
-        when(tabItemFactory.createEditorPartButton(file2, resource2, SOME_TEXT)).thenReturn(editorTab2);
+        when(tabItemFactory.createEditorPartButton(partPresenter1)).thenReturn(editorTab1);
+        when(tabItemFactory.createEditorPartButton(partPresenter2)).thenReturn(editorTab2);
 
         presenter = new EditorPartStackPresenter(view,
                                                  partsComparator,
@@ -152,7 +152,7 @@ public class EditorPartStackPresenterTest {
 
         verify(partPresenter1, times(2)).addPropertyListener(Matchers.<PropertyListener>anyObject());
 
-        verify(tabItemFactory).createEditorPartButton(file1, resource1, SOME_TEXT);
+        verify(tabItemFactory).createEditorPartButton(partPresenter1);
 
         verify(partPresenter1).getTitleImage();
         verify(partPresenter1).getTitle();
