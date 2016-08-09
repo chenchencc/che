@@ -204,9 +204,10 @@ public class EditorAgentImpl implements EditorAgent,
     }
 
     private void doOpen(final VirtualFile file, final OpenEditorCallback callback, Constraints constraints) {
-        EditorPartStack editorPartStack = editorMultiPartStack.getPartStackByPart(activeEditor);
-        if (constraints == null && editorPartStack != null) {
-            PartPresenter partPresenter = editorPartStack.getPartByPath(file.getLocation());
+        PartPresenter activePart = editorMultiPartStack.getActivePart();
+        EditorPartStack activePartStack = editorMultiPartStack.getPartStackByPart(activePart);
+        if (constraints == null && activePartStack != null) {
+            PartPresenter partPresenter = activePartStack.getPartByPath(file.getLocation());
             if (partPresenter != null) {
                 workspaceAgent.setActivePart(partPresenter, EDITING);
                 callback.onEditorActivated((EditorPartPresenter)partPresenter);
