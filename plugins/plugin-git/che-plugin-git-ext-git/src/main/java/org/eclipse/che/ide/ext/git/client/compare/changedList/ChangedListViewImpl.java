@@ -138,9 +138,6 @@ public class ChangedListViewImpl extends Window implements ChangedListView {
         for (String file : items.keySet()) {
             tree.getNodeStorage().add(new ChangedFileNode(file, items.get(file), nodesResources, delegate, false));
         }
-        if (tree.getSelectionModel().getSelectedNodes() == null) {
-            delegate.onNodeNotSelected();
-        }
     }
 
     @Override
@@ -154,9 +151,6 @@ public class ChangedListViewImpl extends Window implements ChangedListView {
             for (Node node : nodes) {
                 tree.getNodeStorage().add(node);
             }
-        }
-        if (tree.getSelectionModel().getSelectedNodes() == null) {
-            delegate.onNodeNotSelected();
         }
     }
 
