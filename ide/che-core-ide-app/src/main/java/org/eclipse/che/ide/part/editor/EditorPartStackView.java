@@ -276,10 +276,10 @@ public class EditorPartStackView extends ResizeComposite implements PartStackVie
 
     @Override
     public void onResize() {
+        super.onResize();
         Scheduler.get().scheduleDeferred(new Scheduler.ScheduledCommand() {
             @Override
             public void execute() {
-                EditorPartStackView.super.onResize();
                 updateDropdownVisibility();
                 ensureActiveTabVisible();
             }
