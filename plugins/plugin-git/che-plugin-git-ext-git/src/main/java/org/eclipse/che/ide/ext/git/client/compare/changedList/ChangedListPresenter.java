@@ -68,9 +68,9 @@ public class ChangedListPresenter implements ChangedListView.ActionDelegate {
         this.changedFiles = changedFiles;
         this.project = project;
         view.showDialog();
+        view.setEnableCompareButton(false);
         viewChangedFiles();
         view.setEnableExpandCollapseButtons(treeViewEnabled);
-        view.setEnableCompareButton(false);
         this.revision = revision;
     }
 
