@@ -31,7 +31,7 @@ import org.eclipse.che.ide.ui.zeroclipboard.ClipboardButtonBuilder;
 @Singleton
 public class DevelopmentViewImpl implements DevelopmentView {
 
-    private static final  DevelopmentViewImplUiBinder UI_BINDER = GWT.create(DevelopmentViewImplUiBinder.class);
+    private static final DevelopmentViewImplUiBinder UI_BINDER = GWT.create(DevelopmentViewImplUiBinder.class);
 
     private final FlowPanel rootElement;
 
@@ -50,7 +50,10 @@ public class DevelopmentViewImpl implements DevelopmentView {
     TextBox sourceType;
 
     @UiField
-    TextArea source;
+    TextBox sourceUrl;
+
+    @UiField
+    TextArea sourceContent;
 
 
     @Inject
@@ -58,7 +61,8 @@ public class DevelopmentViewImpl implements DevelopmentView {
         this.rootElement = UI_BINDER.createAndBindUi(this);
         this.rootElement.setVisible(true);
 
-        buttonBuilder.withResourceWidget(source).build();
+        buttonBuilder.withResourceWidget(sourceUrl).build();
+        buttonBuilder.withResourceWidget(sourceContent).build();
     }
 
 
@@ -93,8 +97,13 @@ public class DevelopmentViewImpl implements DevelopmentView {
     }
 
     @Override
+    public void setSourceUrl(String sourceUrl) {
+        this.sourceUrl.setValue(sourceUrl);
+    }
+
+    @Override
     public void setSourceContent(String sourceContent) {
-        this.source.setValue(sourceContent);
+        this.sourceContent.setValue(sourceContent);
     }
 
     public void updateTargetFields(DevelopmentMachineTarget target) {
@@ -102,7 +111,16 @@ public class DevelopmentViewImpl implements DevelopmentView {
         this.setOwner(target.getOwner());
         this.setType(target.getType());
         this.setSourceType(target.getSourceType());
-        this.setSourceContent(target.getSourceContent());
+
+        final String sourceUrl = target.getSourceUrl();
+
+        if (sourceUrl != null && sourceUrl.length() > 0) {
+            this.setSourceUrl(target.getSourceUrl());
+            this.sourceUrl.getParent().setVisible(true);
+        } else {
+            this.setSourceContent(target.getSourceContent());
+            this.sourceContent.getParent().setVisible(true);
+        }
     }
 
     @Override
@@ -111,6 +129,6 @@ public class DevelopmentViewImpl implements DevelopmentView {
     }
 
 
-    interface  DevelopmentViewImplUiBinder extends UiBinder<FlowPanel, DevelopmentViewImpl> {
+    interface DevelopmentViewImplUiBinder extends UiBinder<FlowPanel, DevelopmentViewImpl> {
     }
 }

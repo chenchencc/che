@@ -47,8 +47,8 @@ public class TargetsPresenter implements TargetsTreeManager, TargetsView.ActionD
     private final MachineServiceClient        machineService;
     private final CategoryPageRegistry        categoryPageRegistry;
 
-    private final Map<String, Target>     targetsByName  = new HashMap<>();
-    private final Map<String, MachineDto> machinesByName = new HashMap<>();
+    private final Map<String, Target>     targets  = new HashMap<>();
+    private final Map<String, MachineDto> machines = new HashMap<>();
 
     private Target selectedTarget;
 
@@ -89,8 +89,8 @@ public class TargetsPresenter implements TargetsTreeManager, TargetsView.ActionD
      */
     @Override
     public void updateTargets(final String preselectTargetName) {
-        targetsByName.clear();
-        machinesByName.clear();
+        targets.clear();
+        machines.clear();
 
         machineService.getMachines(appContext.getWorkspaceId()).then(new Operation<List<MachineDto>>() {
             @Override
@@ -98,11 +98,11 @@ public class TargetsPresenter implements TargetsTreeManager, TargetsView.ActionD
                 //create Target objects from all machines
                 for (MachineDto machine : machineList) {
                     final MachineConfigDto machineConfig = machine.getConfig();
-                    machinesByName.put(machineConfig.getName(), machine);
+                    machines.put(machineConfig.getName(), machine);
                     final String targetCategory = machineConfig.isDev() ? machineLocale.devMachineCategory() : machineConfig.getType();
                     final Target target = createTarget(machineConfig.getName(), targetCategory);
                     target.setConnected(isMachineRunning(machine));
-                    targetsByName.put(target.getName(), target);
+                    targets.put(target.getName(), target);
                 }
                 //create Target objects from recipe with ssh type
                 recipeServiceClient.getAllRecipes().then(new Operation<List<RecipeDescriptor>>() {
@@ -113,16 +113,16 @@ public class TargetsPresenter implements TargetsTreeManager, TargetsView.ActionD
                             if (!machineLocale.targetsViewCategorySsh().equalsIgnoreCase(recipe.getType())) {
                                 continue;
                             }
-                            Target target = targetsByName.get(recipe.getName());
+                            Target target = targets.get(recipe.getName());
                             if (target == null) {
                                 target = createTarget(recipe.getName(), recipe.getType());
                             }
                             target.setRecipe(recipe);
                             categoryPageRegistry.getCategoryPage(target.getCategory()).getTargetManager().restoreTarget(target);
-                            targetsByName.put(target.getName(), target);
+                            targets.put(target.getName(), target);
                         }
-                        view.showTargets(new ArrayList<>(targetsByName.values()));
-                        selectTarget(preselectTargetName == null ? selectedTarget : targetsByName.get(preselectTargetName));
+                        view.showTargets(new ArrayList<>(targets.values()));
+                        selectTarget(preselectTargetName == null ? selectedTarget : targets.get(preselectTargetName));
                     }
                 });
 
@@ -198,8 +198,8 @@ public class TargetsPresenter implements TargetsTreeManager, TargetsView.ActionD
 
         page.setTargetsTreeManager(this);
         Target defaultTarget = page.getTargetManager().createDefaultTarget();
-        targetsByName.put(defaultTarget.getName(), defaultTarget);
-        view.showTargets(new ArrayList<>(targetsByName.values()));
+        targets.put(defaultTarget.getName(), defaultTarget);
+        view.showTargets(new ArrayList<>(targets.values()));
         selectTarget(defaultTarget);
     }
 
@@ -216,7 +216,7 @@ public class TargetsPresenter implements TargetsTreeManager, TargetsView.ActionD
 
     @Override
     public boolean isTargetNameExist(String targetName) {
-        for (Target target : targetsByName.values()) {
+        for (Target target : targets.values()) {
             if (!target.equals(selectedTarget) && target.getName().equals(targetName)) {
                 return true;
             }
@@ -226,6 +226,6 @@ public class TargetsPresenter implements TargetsTreeManager, TargetsView.ActionD
 
     @Override
     public MachineDto getMachineByName(String machineName) {
-        return machinesByName.get(machineName);
+        return machines.get(machineName);
     }
 }

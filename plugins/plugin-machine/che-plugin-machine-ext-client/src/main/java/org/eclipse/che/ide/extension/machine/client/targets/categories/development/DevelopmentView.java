@@ -55,6 +55,13 @@ public interface DevelopmentView extends View<DevelopmentView.ActionDelegate> {
     void setSourceContent(String sourceContent);
 
     /**
+     * Sets machine sourceContent value.
+     *
+     * @param sourceContent
+     */
+    void setSourceContent(String sourceContent);
+
+    /**
      * Update target fields on DevelopmentView.
      *
      * @param target
