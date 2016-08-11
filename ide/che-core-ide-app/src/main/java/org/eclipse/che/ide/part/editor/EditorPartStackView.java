@@ -11,7 +11,6 @@
 package org.eclipse.che.ide.part.editor;
 
 import com.google.gwt.core.client.GWT;
-import com.google.gwt.core.client.Scheduler;
 import com.google.gwt.dom.client.Style;
 import com.google.gwt.event.dom.client.MouseDownEvent;
 import com.google.gwt.event.dom.client.MouseDownHandler;
@@ -180,10 +179,14 @@ public class EditorPartStackView extends ResizeComposite implements PartStackVie
         }
 
         for (int i = 0; i < tabsPanel.getWidgetCount(); i++) {
-            if (listButton != null && listButton != tabsPanel.getWidget(i)) {
-                if (activeTab.getView().asWidget().getAbsoluteTop() > tabsPanel.getAbsoluteTop()) {
-                    tabsPanel.getWidget(i).setVisible(false);
-                }
+            Widget currentWidget = tabsPanel.getWidget(i);
+            Widget activeTabWidget = activeTab.getView().asWidget();
+            if (listButton != null && listButton == currentWidget) {
+                continue;
+            }
+
+            if (activeTabWidget.getAbsoluteTop() > tabsPanel.getAbsoluteTop() && activeTabWidget != currentWidget) {
+                currentWidget.setVisible(false);
             }
         }
     }
@@ -277,12 +280,7 @@ public class EditorPartStackView extends ResizeComposite implements PartStackVie
     @Override
     public void onResize() {
         super.onResize();
-        Scheduler.get().scheduleDeferred(new Scheduler.ScheduledCommand() {
-            @Override
-            public void execute() {
-                updateDropdownVisibility();
-                ensureActiveTabVisible();
-            }
-        });
+        updateDropdownVisibility();
+        ensureActiveTabVisible();
     }
 }
